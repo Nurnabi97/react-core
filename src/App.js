@@ -2,98 +2,111 @@ import logo from './logo.svg';
 import './App.css';
 import { useEffect, useState } from 'react';
 
+
+//How to create react app_Number-1
 function App() {
-  const names =["rahim hossain", "korim hossain"]
+  const products = ["Geophone", "Repeater"]
   
-  const products = [
-    {name: "photoshop", price: "$69.78"},
-    {name: "PDF reader", price: "$38.96"}
-  ]
   
   return (
-  <div>
-    <p>hello react</p>
-    <Counter></Counter>
-    <Users></Users>
-    <ul>
-      {
-        products.map(pd => <li>{pd.name}</li>)
-      }
-      {
-        names.map(name => <li>{name}</li>)
-      }
-     {
-      names.map(name => <Officer names>{name}</Officer>)
-     }
-   </ul>
-  
-    <Product product={products[0]}></Product>
-    <Product product={products[1]}></Product>
-
-    <Officer name= {names[0]} dis = "assistant manager" div = "geophysical"></Officer>
-    <Officer name= {names[1]} dis= "officer" div="admin"></Officer>
-    <Officer name= "jamal" dis= "staf" div= "seismic"></Officer>
-  
-  </div>
-  );
-}
-
-
-function Product(props){
-  return(
     <div>
-     <h2>{props.product.name}</h2>
-     <h4>{props.product.price }</h4>
+      <h1>Welcome to Learn React</h1>
+      <ul>
+      //create component
+      <Friends></Friends>
+      
+      //using props
+      <Products name = "Geophone"></Products>   //fixed data
+      <Products name = {products[1]} price = "$220"></Products>  //dynamic data
+     
+      //destructuring
+      <Officers></Officers>
+
+      //using useState
+      <Counter></Counter>
+
+      //using useEffect
+      <CallApi></CallApi>
+      </ul>
+   
     </div>
-  )
-}
-
-//creating a forma to accessing all similar property. 
-function Officer(props){
-  return(
-  <div style={{border:'2px solid green', margin:'10px', textAlign:'center'}}>
-    <h2>name:{props.name}</h2>
-    <h3>designation:{props.dis}</h3>
-    <h4>division:{props.div}</h4>
-  </div>
   );
 }
 
 
-// adding counter
-function Counter(){
-  const[ count, setCount] = useState(10);
+//How to create component and use it_Number-2
+function Friends(){
+  const friends = ["rahim", "korim", "jamal", "rubel", "rakib"]
   return(
     <div>
-      <h2>count:{count} </h2>
-      <button onClick = {() => setCount(count - 1)}>Decrease</button>
-      <button onClick={() => setCount(count + 1)}>Increase</button>
+      <h3>create component</h3>
+      {
+        friends.map(friend => <li>{friend}</li>)  //accessing all friend by threw loop.
+      }
+      <h3>{friends[3]}</h3> //accessing one by one
     </div>
   )
 }
 
 
-//calling api
-function Users(){
- const [users, setUsers] = useState([]);
- useEffect(() =>{
-  fetch('https://jsonplaceholder.typicode.com/users')
-  .then(res => res.json())
-  .then(data => setUsers(data));
- }, []) //[] for stop randers of useEffect
+//How to send data using props_Number-3
+function Products(props){
+  return(
+    <div>
+      <p>products name is: {props.name}</p>
+      <p>price: {props.price|| "$320"}</p>  //$320 is default value.
+    </div>
+  )
+}
+
+
+//using object property by destructuring_Number-4
+function Officers(){
+  const officers = {
+    name: "Hasan", 
+    age: "32", 
+    section: "QC"
+  }
  
- return(
-   <div>
-     <h3>Dynamic Users:{users.length}</h3>
-     {
-       console.log(users)
-     }
-     {
-       users.map(user => <li>{user.name}</li>)
-     }
-   </div>
- )
+ const {name, section} = officers 
+  return(
+    <h1>{name} & {section}</h1>  //destructuring data
+  )
 }
 
+
+//How to declare useState and eventHandler_Number-5 & 6
+function Counter(){
+  const [count, setCount] = useState(0) //useStart need to declare in import section.
+  return(
+    <div>
+      <h2>counter:{count} </h2>
+     <button onClick = {()=>setCount(count+1)}>increase</button>
+     <button onClick = {()=>setCount(count-1)}>decrease</button>
+    </div>
+  )
+}
+
+
+//How to declare useEffect and use it_Number-7 & 8
+function CallApi(){
+  const [todos, setTodos] = useState([])
+  useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/todos')
+    .then(res => res.json())
+    .then(data => setTodos(data))
+  },[]) //for stop randers of useEffect
+  return(
+    <div>
+      {
+        console.log(todos)
+      }
+      <h2>List of todos: {todos.length}</h2>
+      {
+      todos.map(todo => <li>{todo.title}</li>)
+      }
+    </div>
+  )
+}
 
 export default App;
